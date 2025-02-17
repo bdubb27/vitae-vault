@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS person (
+    party_id UUID PRIMARY KEY REFERENCES party(party_id) ON DELETE CASCADE,
+    first_name TEXT NOT NULL,
+    middle_name TEXT,
+    last_name TEXT NOT NULL,
+    valid_from TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    valid_to TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
