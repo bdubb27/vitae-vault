@@ -3,11 +3,11 @@ set -e
 
 source "$(dirname "$0")/../config/db-config.sh"
 
-SCHEMA_DIR="$(dirname "$0")/../migrations"
+MIGRATIONS_DIR="$(dirname "$0")/../migrations"
 
-echo "Applying schema migrations..."
-for file in "$SCHEMA_DIR"/*.sql; do
-    echo "Applying $file..."
+echo "Applying migrations..."
+for file in "$MIGRATIONS_DIR"/*.sql; do
+    echo "Applying ${file##*/}..."
     psql -U postgres $DB_HOST -d $DB_NAME -f "$file"
 done
 
