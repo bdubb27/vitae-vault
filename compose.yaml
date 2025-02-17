@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17.3-alpine3.21
+    healthcheck:
+      test: pg_isready -U postgres -d vitae_vault_db
+      interval: 1m
+      timeout: 100ms
+      retries: 3
+      start_period: 30s
+      start_interval: 100ms
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust  # FIXME: not recommended
+
+volumes:
+  postgres-data:
