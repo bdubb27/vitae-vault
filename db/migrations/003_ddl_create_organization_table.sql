@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS organization (
     party_id UUID PRIMARY KEY REFERENCES party(party_id) ON DELETE CASCADE,
+
     organization_name TEXT NOT NULL,
     industry TEXT,
+
     valid_from TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     valid_to TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
