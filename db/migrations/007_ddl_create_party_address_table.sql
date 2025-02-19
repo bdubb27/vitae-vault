@@ -1,4 +1,4 @@
-CREATE TABLE party_address (
+CREATE TABLE IF NOT EXISTS party_address (
     address_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     party_id UUID REFERENCES party(party_id) ON DELETE CASCADE,
     street_address TEXT NOT NULL,

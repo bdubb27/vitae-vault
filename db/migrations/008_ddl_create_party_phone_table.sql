@@ -1,4 +1,4 @@
-CREATE TABLE party_phone (
+CREATE TABLE IF NOT EXISTS party_phone (
     phone_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 
     party_id UUID NOT NULL REFERENCES party(party_id) ON DELETE CASCADE,

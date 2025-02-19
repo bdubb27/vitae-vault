@@ -1,5 +1,6 @@
-CREATE TABLE party_contact (
+CREATE TABLE IF NOT EXISTS party_contact (
     contact_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+
     party_id UUID NOT NULL REFERENCES party(party_id),
     contact_type TEXT NOT NULL,
     contact_value TEXT NOT NULL,

@@ -17,13 +17,12 @@ BEGIN
         WHERE c.column_name = 'updated_at'
     LOOP
         EXECUTE format(
-            'DROP TRIGGER IF EXISTS trigger_update_%I ON %I;
-             CREATE TRIGGER trigger_update_%I
+            'CREATE OR REPLACE TRIGGER trigger_update_%I
              BEFORE UPDATE ON %I
              FOR EACH ROW
              WHEN (OLD.* IS DISTINCT FROM NEW.*)
              EXECUTE FUNCTION update_timestamp();',
-            r.tablename, r.tablename, r.tablename, r.tablename
+            r.tablename, r.tablename
         );
     END LOOP;
 END $$;

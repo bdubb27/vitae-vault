@@ -1,4 +1,4 @@
-CREATE TABLE party_relationship (
+CREATE TABLE IF NOT EXISTS party_relationship (
     relationship_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 
     from_party_id UUID NOT NULL REFERENCES party(party_id),
