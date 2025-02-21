@@ -43,4 +43,7 @@ psql -U postgres $DB_HOST -d $DB_NAME -c "CREATE EXTENSION IF NOT EXISTS \"uuid-
 echo "Running database migrations..."
 "$(dirname "$0")/scripts/db-migrate.sh"
 
+echo "Seeding database..."
+"$(dirname "$0")/scripts/db-seed.sh"
+
 echo "Database initialization complete!"
