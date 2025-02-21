@@ -8,7 +8,8 @@ DECLARE
 BEGIN
     SELECT COALESCE(MAX(version), 0) INTO latest_version
       FROM schema_history
-     WHERE table_name = p_table_name;
+     WHERE table_name = p_table_name
+       AND valid_to IS NULL;
 
     UPDATE schema_history
        SET valid_to = NOW()
@@ -16,12 +17,7 @@ BEGIN
        AND valid_to IS NULL;
 
     INSERT INTO schema_history (table_name, version, ddl_type, filename)
-    SELECT p_table_name, latest_version + 1, p_command, p_filename
-     WHERE NOT EXISTS (
-        SELECT 1 FROM schema_history
-         WHERE table_name = p_table_name
-           AND version = latest_version + 1
-    );
+    VALUES (p_table_name, latest_version + 1, p_command, p_filename);
 
 END;
 $$ LANGUAGE plpgsql;

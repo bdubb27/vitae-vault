@@ -1,20 +1,13 @@
-CREATE OR REPLACE FUNCTION update_timestamp()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-DO $$
+CREATE OR REPLACE FUNCTION apply_updated_at_triggers()
+RETURNS VOID AS $$
 DECLARE r RECORD;
 BEGIN
     FOR r IN
         SELECT t.tablename
-        FROM pg_tables t
-        JOIN information_schema.columns c
+          FROM pg_tables t
+          JOIN information_schema.columns c
             ON t.tablename = c.table_name
-        WHERE c.column_name = 'updated_at'
+         WHERE c.column_name = 'updated_at'
     LOOP
         EXECUTE format(
             'CREATE OR REPLACE TRIGGER trigger_update_%I
@@ -25,4 +18,5 @@ BEGIN
             r.tablename, r.tablename
         );
     END LOOP;
-END $$;
+END;
+$$ LANGUAGE plpgsql;
