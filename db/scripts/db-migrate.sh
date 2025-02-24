@@ -26,13 +26,13 @@ for dir in "core" "."; do
         fi
 
         OUTPUT=$(run_psql --as-postgres -f "$file")
-        TARGET=$(head -1 < "$file" | grep -oE '^(CREATE|ALTER|DROP|TRUNCATE)( OR REPLACE)? (TABLE|FUNCTION)( IF NOT EXISTS)? [a-zA-Z_0-9()]+' | awk '{print $NF}' | sed -E 's/\($/()/')
+        TARGET=$(grep -oE '^(CREATE|ALTER|DROP|TRUNCATE)( OR REPLACE)? (TABLE|FUNCTION)( IF NOT EXISTS)? [A-Za-z_0-9()]+' "$file" | head -n 1 | awk '{print $NF}' | sed -E 's/\($/()/')
 
         PSQL_NOTICE=$(echo "$OUTPUT" | awk -F': NOTICE:  ' 'NF>1 {print $2}')
         PSQL_ERROR=$(echo "$OUTPUT" | awk -F': ERROR:  ' 'NF>1 {print $2}')
         PSQL_NOTICE_COMMAND=$(echo "$OUTPUT" | awk '/: NOTICE:  / {getline; print}' | grep -oE '^(CREATE|ALTER|DROP|TRUNCATE) (TABLE|FUNCTION|SCHEMA|INDEX|TRIGGER|VIEW|SEQUENCE|TYPE)' || echo "UNKNOWN")
         PSQL_ERROR_COMMAND=$(echo "$OUTPUT" | awk '/: ERROR:  / {getline; print}' | grep -oE '^(CREATE|ALTER|DROP|TRUNCATE) (TABLE|FUNCTION|SCHEMA|INDEX|TRIGGER|VIEW|SEQUENCE|TYPE)' || echo "UNKNOWN")
-        PSQL_COMMAND=$(echo "$OUTPUT" | grep -oE '^(CREATE|ALTER|DROP|TRUNCATE) (TABLE|FUNCTION|SCHEMA|INDEX|TRIGGER|VIEW|SEQUENCE|TYPE)' || echo "UNKNOWN")
+        PSQL_COMMAND=$(echo "$OUTPUT" | grep -oE '^(CREATE|ALTER|DROP|TRUNCATE) (TABLE|FUNCTION|SCHEMA|INDEX|TRIGGER|VIEW|SEQUENCE|TYPE)' | head -n 1 || echo "UNKNOWN")
         LOG_SCHEMA_CHANGE_ENABLED=$(run_psql "SELECT 1 FROM pg_proc WHERE pg_proc.proname = 'log_schema_change';")
 
 
