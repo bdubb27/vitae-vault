@@ -16,4 +16,4 @@ CREATE TABLE IF NOT EXISTS organization_industry (
     CONSTRAINT uq_organization_industry_valid_to UNIQUE NULLS NOT DISTINCT (organization_id, industry_id, valid_to)
 );
 
-CREATE UNIQUE INDEX idx_organization_primary_industry ON organization_industry (organization_id) WHERE is_primary = TRUE AND valid_to IS NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_organization_primary_industry ON organization_industry (organization_id) WHERE is_primary = TRUE AND valid_to IS NULL;
